@@ -1,1 +1,6 @@
+.terraform
+*.auto.tfvars
+*.backup
+terraform.tfstate
+tfplan
 vault-password
