@@ -1,0 +1,39 @@
+- name: Base server setup
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+  roles:
+    - role: geerlingguy.pip
+      tags: setup
+    - role: geerlingguy.docker
+      tags: setup
+
+- name: Application deployment
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Create .env file from template
+      ansible.builtin.template:
+        src: templates/.env.j2
+        dest: .env
+        owner: root
+        group: root
+        mode: '0644'
+      tags: deploy
+
+    - name: Run Redmine container
+      community.docker.docker_container:
+        name: redmine
+        image: redmine:latest
+        restart_policy: always
+        state: started
+        published_ports:
+          - "{{ redmine_port }}:3000"
+        env_file: .env
+      tags: deploy

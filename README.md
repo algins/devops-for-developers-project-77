@@ -7,9 +7,12 @@
 
 ## Description
 
-This project manages infrastructure using **Terraform**, with **Make** providing a simple interface for common Terraform workflows such as initialization, planning, applying, and destroying infrastructure.
+This project manages infrastructure using **Terraform** and **Ansible**, with **Make** providing a simple interface for common workflows:
 
-All Terraform configuration files are located in the `terraform/` directory.
+- Terraform: provision, update, or destroy infrastructure.
+- Ansible: configure and deploy applications on your servers.
+
+All Terraform configuration files are located in the `terraform/` directory, and Ansible playbooks and roles are in the `ansible/` directory.
 
 ---
 
@@ -17,6 +20,7 @@ All Terraform configuration files are located in the `terraform/` directory.
 
 * Git
 * Terraform
+* Ansible
 * Make
 
 ---
@@ -29,70 +33,33 @@ $ git clone https://github.com/algins/devops-for-developers-project-77.git && cd
 
 ---
 
-## Initialize Terraform
+## Makefile commands
+
+### Terraform
 
 ```sh
-$ make init
+$ make terraform-init    # Initializes Terraform in terraform/ directory
+$ make terraform-plan    # Shows planned infrastructure changes
+$ make terraform-apply   # Applies the Terraform configuration
+$ make terraform-destroy # Destroys all managed infrastructure
 ```
 
-Initializes Terraform in the `terraform` directory:
-- Downloads required providers
-- Initializes the backend
-- Prepares the working directory
-
----
-
-## Preview infrastructure changes
+### Ansible
 
 ```sh
-$ make plan
+$ make ansible-install   # Installs Ansible roles from ansible/requirements.yml
+$ make ansible-lint      # Runs ansible-lint on playbook.yml
+$ make ansible-setup     # Runs playbook.yml with --tags setup
+$ make ansible-deploy    # Runs playbook.yml with --tags deploy
+$ make ansible-vault     # Edits vault file ansible/group_vars/webservers/vault.yml
 ```
 
-Displays the execution plan without applying changes.  
-Use this command to review what Terraform will modify.
-
----
-
-## Apply infrastructure changes
-
-```sh
-$ make apply
-```
-
-Applies the Terraform configuration and provisions infrastructure resources.
-
-⚠️ Confirmation may be required.
-
----
-
-## Destroy infrastructure
-
-```sh
-$ make destroy
-```
-
-Destroys all infrastructure managed by Terraform in this project.
-
-⚠️ **Warning:** This action will permanently delete all managed resources.
-
----
-
-## Project structure
-
-```text
-.
-├── Makefile
-└── terraform/
-    ├── main.tf
-    ├── variables.tf
-    ├── outputs.tf
-    └── providers.tf
-```
+> All Ansible commands are executed from the `ansible/` directory and use `inventory.ini` and `vault-password`.
 
 ---
 
 ## Notes
 
-- Ensure cloud provider credentials are properly configured before running `make apply`.
-- Always review changes with `make plan`.
-- For team usage, consider remote state storage and state locking.
+- Ensure cloud provider credentials are properly configured before running `make terraform-apply`.
+- Always review changes with `make terraform-plan`.
+- For team usage, consider remote state storage.

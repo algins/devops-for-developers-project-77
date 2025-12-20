@@ -3,12 +3,17 @@ resource "digitalocean_vpc" "default" {
   region = "ams3"
 }
 
+data "digitalocean_ssh_key" "default" {
+  name = "igors.algins@gmail.com"
+}
+
 resource "digitalocean_droplet" "web1" {
   name = "web1"
   region = "ams3"
   size = "s-1vcpu-1gb"
   image = "ubuntu-24-04-x64"
   vpc_uuid = digitalocean_vpc.default.id
+  ssh_keys = [data.digitalocean_ssh_key.default.id]
 }
 
 resource "digitalocean_droplet" "web2" {
@@ -17,6 +22,7 @@ resource "digitalocean_droplet" "web2" {
   size = "s-1vcpu-1gb"
   image = "ubuntu-24-04-x64"
   vpc_uuid = digitalocean_vpc.default.id
+  ssh_keys = [data.digitalocean_ssh_key.default.id]
 }
 
 resource "digitalocean_domain" "default" {
@@ -59,7 +65,7 @@ resource "digitalocean_loadbalancer" "public" {
   healthcheck {
     protocol = "http"
     port = 80
-    path = "/"
+    path = "/login"
     check_interval_seconds = 10
     response_timeout_seconds = 5
     healthy_threshold = 5

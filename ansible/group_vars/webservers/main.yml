@@ -1,0 +1,7 @@
+redmine_port: 80
+
+redmine_db_postgres: private-postgres-do-user-29746219-0.l.db.ondigitalocean.com
+redmine_db_database: defaultdb
+redmine_db_username: doadmin
+redmine_db_password: "{{ vault_redmine_db_password }}"
+redmine_db_port: 25060
