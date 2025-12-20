@@ -63,3 +63,10 @@ $ make ansible-vault     # Edits vault file ansible/group_vars/webservers/vault.
 - Ensure cloud provider credentials are properly configured before running `make terraform-apply`.
 - Always review changes with `make terraform-plan`.
 - For team usage, consider remote state storage.
+
+---
+
+## Demo
+
+You can access the deployed application here:
+[Deployed Demo Application](https://source.id.lv)
