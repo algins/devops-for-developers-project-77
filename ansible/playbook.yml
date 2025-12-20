@@ -13,9 +13,13 @@
     - role: geerlingguy.docker
       tags: setup
 
-- name: Application deployment
+- name: Application deployment and monitoring setup
   hosts: webservers
   become: true
+
+  roles:
+    - role: datadog.datadog
+      tags: setup
 
   tasks:
     - name: Create .env file from template

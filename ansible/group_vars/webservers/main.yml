@@ -5,3 +5,13 @@ redmine_db_database: defaultdb
 redmine_db_username: doadmin
 redmine_db_password: "{{ vault_redmine_db_password }}"
 redmine_db_port: 25060
+
+datadog_api_key: "{{ vault_datadog_api_key }}"
+datadog_site: datadoghq.eu
+
+datadog_checks:
+  http_check:
+    init_config:
+    instances:
+      - name: redmine_http_check
+        url: "http://localhost:{{ redmine_port }}/"
